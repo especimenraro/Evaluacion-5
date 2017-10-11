@@ -48,7 +48,7 @@ var juego = {
 								}// FIN ELSE		
 						} //FIN FOR		COLUMNAS
 						longitud = figurasIguales.length
-						if (longitud<2) {
+						if (longitud<3) {
 							for (k=0;k<longitud;k++) {
 								figurasIguales.pop();}}
 						console.log(figurasIguales,"Cuenta:",cuenta);

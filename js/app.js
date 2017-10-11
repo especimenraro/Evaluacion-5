@@ -34,26 +34,12 @@ var juego = {
 								cuenta++;		
 								flag = 0;
 							} //FIN IF
-							else if (cuenta==1) {
-								indice=-1;
-								flag =0;
-								inicio = figurasIguales.length-1;
-								finaliza = figurasIguales.length;
-								for (k=inicio;k<finaliza;k++) {figurasIguales.pop();}
-								cuenta=0;
-							} else if (cuenta>=2 && flag==0)   {
-								flag = 1;
-								indice++;
-								cuenta=0;
+							else {
 								}// FIN ELSE		
 						} //FIN FOR		COLUMNAS
-						longitud = figurasIguales.length
-						if (longitud<3) {
-							for (k=0;k<longitud;k++) {
-								figurasIguales.pop();}}
+						
 						console.log(figurasIguales,"Cuenta:",cuenta);
-						indice = -1;
-						cuenta=0;
+						
 						for (k=0;k<figurasIguales.length;k++) {figurasIguales.pop();}
 				}//FIN FOR		FILAS	
 			} //FIN VERIFICA TABLERO
