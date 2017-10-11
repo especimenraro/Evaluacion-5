@@ -21,6 +21,7 @@ var juego = {
 			}, // FIN INIT
 			verificaTablero: function (columna) {
 				var figurasIguales = [];
+				var lineaIguales = [];
 				var cuenta = 0;
 				var indice = -1;
 				for (fila=4;fila>=0;fila--) {
@@ -34,13 +35,25 @@ var juego = {
 								cuenta++;		
 								flag = 0;
 							} //FIN IF
-							else {
+							else if (cuenta>=2) {
+								lineaIguales = figurasIguales.concat(lineaIguales);
+								figurasIguales = [];
+								cuenta=0;
+								indice = -1;
+								} else {
+									longitud = 	figurasIguales.length;	
+									figurasIguales = [];
+									//for (k=0;k<longitud;k++) {figurasIguales.pop()};		
+									cuenta=0;
+									indice = -1;				
 								}// FIN ELSE		
 						} //FIN FOR		COLUMNAS
-						
-						console.log(figurasIguales,"Cuenta:",cuenta);
-						
-						for (k=0;k<figurasIguales.length;k++) {figurasIguales.pop();}
+						if (cuenta>=2) {lineaIguales = figurasIguales.concat(lineaIguales);}
+						cuenta=0;
+									indice = -1;
+						console.log(lineaIguales);
+						lineaIguales = [];
+						figurasIguales = [];
 				}//FIN FOR		FILAS	
 			} //FIN VERIFICA TABLERO
 			};//FIN JUEGO
