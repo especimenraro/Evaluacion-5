@@ -19,9 +19,17 @@ var juego = {
 				console.log("Init listo");
 				this.verificaTablero(columna);
 			}, // FIN INIT
+			
+			
 			verificaTablero: function (columna) {
+						this.buscaIguales(columna);
+			} , //FIN VERIFICA TABLERO
+			
+			
+			buscaIguales: function (columna) {
 				var figurasIguales = [];
 				var lineaIguales = [];
+				var tableroIguales = [];
 				var cuenta = 0;
 				var indice = -1;
 				for (fila=4;fila>=0;fila--) {
@@ -41,19 +49,55 @@ var juego = {
 								cuenta=0;
 								indice = -1;
 								} else {
-									longitud = 	figurasIguales.length;	
 									figurasIguales = [];
-									//for (k=0;k<longitud;k++) {figurasIguales.pop()};		
 									cuenta=0;
 									indice = -1;				
 								}// FIN ELSE		
 						} //FIN FOR		COLUMNAS
+						if (cuenta>=2) {lineaIguales = figurasIguales.concat(lineaIguales);}
 						cuenta=0;
-									indice = -1;
-						console.log(lineaIguales);
+						indice = -1;
+						tableroIguales.push(lineaIguales); 
 						lineaIguales = [];
 						figurasIguales = [];
 				}//FIN FOR		FILAS	
-			} //FIN VERIFICA TABLERO
+				console.log(tableroIguales);
+				if (tableroIguales[0].length || tableroIguales[1].length || tableroIguales[2].length || tableroIguales[3].length|| tableroIguales[4].length) {
+					
+					var a = setTimeout(this.eliminaIguales,1000,columna,tableroIguales);
+					} // FIN IF
+				else { return;}
+			}, // FIN BUSCA IGUALES
+			
+			eliminaIguales: function (columna,tableroIguales) {
+				console.log("entro");
+				
+				for (i=0;i<tableroIguales.length;i++) {
+					for (j=0;j<tableroIguales[i].length;j++) {
+						if (tableroIguales[i].length) {	
+							filaImagen = 4-i;
+							imagen = '.imagen-'+filaImagen;
+							columna[tableroIguales[i][j]].find(imagen).slideUp("slow","swing");			}
+					}//FIN FOR				
+				}//FIN FOR
+			} //FIN ELIMINA IGUALES
 			};//FIN JUEGO
 			juego.init();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
