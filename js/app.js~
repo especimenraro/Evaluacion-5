@@ -16,19 +16,20 @@ var juego = {
 					}//FIN FOR
 							
 				}//FIN FOR
-				console.log("Init listo");
-				this.verificaTablero(columna);
+				console.log("Inicio");
+				juego.verificaTablero(columna);
 				console.log("Fin");
 			}, // FIN INIT
 			
 			
 			verificaTablero: function (columna) {
-						this.buscaIguales(columna);
+						juego.buscaIguales(columna);
 						//return;
 			} , //FIN VERIFICA TABLERO
 			
 			
 			buscaIguales: function (columna) {
+				console.log("Busca Iguales");
 				var figurasIguales = [];
 				var lineaIguales = [];
 				var tableroIguales = [];
@@ -63,10 +64,10 @@ var juego = {
 						lineaIguales = [];
 						figurasIguales = [];
 				}//FIN FOR		FILAS	
-				console.log(tableroIguales);
+				
 				if (tableroIguales[0].length || tableroIguales[1].length || tableroIguales[2].length || tableroIguales[3].length|| tableroIguales[4].length) {
 					
-					setTimeout(this.ocultaIguales,1000,columna,tableroIguales);
+					setTimeout(juego.ocultaIguales,1000,columna,tableroIguales);
 					//return;
 					} // FIN IF
 				else { return;}
@@ -101,11 +102,12 @@ var juego = {
 								}
 					}//FIN FOR				
 				}//FIN FOR
-				console.log(columna,tableroIguales);
+				
 				juego.ordenaTablero();
 			}, //FIN ELIMINA IGUALES
 			
 			ordenaTablero: function () {
+				console.log("Ordena");
 				var indiceAleatorio;
 				var imagen;
 				for (i=1;i<8;i++) { 																																			// RECORRE COLUMNA POR COLUMNA
@@ -119,6 +121,8 @@ var juego = {
 									if ($(col).find(filaSup).find("img").length) {
 										contenido = $(col).find(filaSup).find("img");
 										$(col).find(fila).append(contenido);
+										clase = "imagen-"+j;
+										$(col).find(fila).find("img").attr("class",clase);
 										 $(col).find(filaSup).find("img").remove();
 										 k=0;
 										}//FIN IF	
@@ -127,7 +131,34 @@ var juego = {
 							}//FIN FOR
 						} // FIN IF
 					}// FIN FOR				
-				} //FIN ORDENA TABLERO		
+					juego.rellenaTablero();
+				}, //FIN ORDENA TABLERO
+				
+				rellenaTablero: function () {
+					console.log("Rellena");
+					var indiceAleatorio;
+					var imagen;
+					var columna = [];
+					for (i=1;i<8;i++) { 																																			// RECORRE COLUMNA POR COLUMNA
+					col = ".col-"+i;
+					if ($(col).find("img").length<5) {																																 // PREGUNTA SI LA LA COLUMNA TIENE IMAGENES BORRADAS
+						for (j=4;j>=0;j--) {  																																// RECORRE FILA POR FILA
+							fila = ".fil-" + j;
+							if ($(col).find(fila).find("img").length==0) {												//PREGUNTA SI LA CASILLA ESTA VACIA
+										indiceAleatorio = Math.round(3*Math.random()+1);
+										imagen = "./image/"+indiceAleatorio+".png";					
+										$(col).find(fila).append('<img src="'+imagen+'" class="imagen-'+j+'" >');				
+								}// FIN IF							
+							}//FIN FOR
+						} // FIN IF
+					}// FIN FOR				
+					for (i=0;i<7;i++) {
+					indiceCol = i+1;
+					objeto = ".col-"+indiceCol;
+					columna[i] = $(objeto);
+					}
+					juego.verificaTablero(columna);
+				} // FIN RELLENA TABLERO		
 			};//FIN JUEGO
 			juego.init();
 
