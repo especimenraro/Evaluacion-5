@@ -18,11 +18,13 @@ var juego = {
 				}//FIN FOR
 				console.log("Init listo");
 				this.verificaTablero(columna);
+				console.log("Fin");
 			}, // FIN INIT
 			
 			
 			verificaTablero: function (columna) {
 						this.buscaIguales(columna);
+						//return;
 			} , //FIN VERIFICA TABLERO
 			
 			
@@ -64,23 +66,62 @@ var juego = {
 				console.log(tableroIguales);
 				if (tableroIguales[0].length || tableroIguales[1].length || tableroIguales[2].length || tableroIguales[3].length|| tableroIguales[4].length) {
 					
-					var a = setTimeout(this.eliminaIguales,1000,columna,tableroIguales);
+					setTimeout(this.ocultaIguales,1000,columna,tableroIguales);
+					//return;
 					} // FIN IF
 				else { return;}
 			}, // FIN BUSCA IGUALES
 			
-			eliminaIguales: function (columna,tableroIguales) {
-				console.log("entro");
-				
+			ocultaIguales: function (columna,tableroIguales) {
+				console.log("Oculta");
 				for (i=0;i<tableroIguales.length;i++) {
 					for (j=0;j<tableroIguales[i].length;j++) {
 						if (tableroIguales[i].length) {	
 							filaImagen = 4-i;
 							imagen = '.imagen-'+filaImagen;
-							columna[tableroIguales[i][j]].find(imagen).slideUp("slow","swing");			}
+							objetoImagen = columna[tableroIguales[i][j]].find(imagen);
+							objetoImagen.slideUp("slow","linear");	
+								}
 					}//FIN FOR				
 				}//FIN FOR
-			} //FIN ELIMINA IGUALES
+				//setTimeout(juego.eliminaIguales,1000,columna,tableroIguales);
+				
+				//return;
+			}, //FIN OCULTA IGUALES
+			
+			eliminaIguales: function (columna,tableroIguales) {
+				console.log("Elimina");				
+				for (i=0;i<tableroIguales.length;i++) {
+					for (j=0;j<tableroIguales[i].length;j++) {
+						if (tableroIguales[i].length) {	
+							filaImagen = 4-i;
+							imagen = '.imagen-'+filaImagen;
+							objetoImagen = columna[tableroIguales[i][j]].find(imagen);
+							objetoImagen.remove();
+								}
+					}//FIN FOR				
+				}//FIN FOR
+				console.log(columna,tableroIguales);
+				juego.ordenaTablero();
+			}, //FIN ELIMINA IGUALES
+			
+			ordenaTablero: function () {
+				var indiceAleatorio;
+				var imagen;
+				for (i=1;i<8;i++) {
+					col = ".col-"+i;
+					if ($(col).length<5) {
+						for (j=4;j>=0;j--) {
+							fila = ".fil-" + j;
+							if ($(col).find(fila).find("img").length==0) {
+								indiceAleatorio = Math.round(3*Math.random()+1);
+								imagen = "./image/"+indiceAleatorio+".png";					
+								$(col).find(fila).append('<img src="'+imagen+'" class="imagen-'+j+'" >');	
+								}// FIN IF							
+							}//FIN FOR
+						} // FIN IF
+					}// FIN FOR				
+				} //FIN ORDENA TABLERO			
 			};//FIN JUEGO
 			juego.init();
 
