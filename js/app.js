@@ -84,8 +84,8 @@ var juego = {
 								}
 					}//FIN FOR				
 				}//FIN FOR
-				//setTimeout(juego.eliminaIguales,1000,columna,tableroIguales);
-				juego.ordenaTablero();
+				setTimeout(juego.eliminaIguales,1000,columna,tableroIguales);
+				
 				//return;
 			}, //FIN OCULTA IGUALES
 			
@@ -102,26 +102,30 @@ var juego = {
 					}//FIN FOR				
 				}//FIN FOR
 				console.log(columna,tableroIguales);
-				juego.ordenaTablero();
+				//juego.ordenaTablero();
 			}, //FIN ELIMINA IGUALES
 			
 			ordenaTablero: function () {
 				var indiceAleatorio;
 				var imagen;
-				for (i=1;i<8;i++) {
+				for (i=1;i<8;i++) { 																																			// RECORRE COLUMNA POR COLUMNA
 					col = ".col-"+i;
-					if ($(col).length<5) {
-						for (j=4;j>=0;j--) {
+					if ($(col).length<5) {																																 // PREGUNTA SI LA LA COLUMNA TIENE IMAGENES BORRADAS
+						for (j=4;j>=0;j--) {  																																// RECORRE FILA POR FILA
 							fila = ".fil-" + j;
-							if ($(col).find(fila).find("img").length==0) {
-								indiceAleatorio = Math.round(3*Math.random()+1);
-								imagen = "./image/"+indiceAleatorio+".png";					
-								$(col).find(fila).append('<img src="'+imagen+'" class="imagen-'+j+'" >');	
+							if ($(col).find(fila).find("img").length==0) {												//PREGUNTA SI LA CASILLA ESTA VACIA
+								for (k=j-1;k<=0;k--) { 																									// RECORRE CASILLA POR CASILLA HASTA QUE ENCUENTRA UNA NO VACIA
+									filaSup = ".fil-" + k;
+									if ($(col).find(filaSup).find("img").length) {
+										contenido1 = $(col).find(filaSup).find("img");
+										
+										}//FIN IF	
+									}// FIN FOR
 								}// FIN IF							
 							}//FIN FOR
 						} // FIN IF
 					}// FIN FOR				
-				} //FIN ORDENA TABLERO			
+				} //FIN ORDENA TABLERO		
 			};//FIN JUEGO
 			juego.init();
 
