@@ -102,7 +102,7 @@ var juego = {
 					}//FIN FOR				
 				}//FIN FOR
 				console.log(columna,tableroIguales);
-				//juego.ordenaTablero();
+				juego.ordenaTablero();
 			}, //FIN ELIMINA IGUALES
 			
 			ordenaTablero: function () {
@@ -110,15 +110,19 @@ var juego = {
 				var imagen;
 				for (i=1;i<8;i++) { 																																			// RECORRE COLUMNA POR COLUMNA
 					col = ".col-"+i;
-					if ($(col).length<5) {																																 // PREGUNTA SI LA LA COLUMNA TIENE IMAGENES BORRADAS
+					if ($(col).find("img").length<5) {																																 // PREGUNTA SI LA LA COLUMNA TIENE IMAGENES BORRADAS
 						for (j=4;j>=0;j--) {  																																// RECORRE FILA POR FILA
 							fila = ".fil-" + j;
-							if ($(col).find(fila).find("img").length==0) {												//PREGUNTA SI LA CASILLA ESTA VACIA
-								for (k=j-1;k<=0;k--) { 																									// RECORRE CASILLA POR CASILLA HASTA QUE ENCUENTRA UNA NO VACIA
+							if ($(col).find(fila).find("img").length==0 && j) {												//PREGUNTA SI LA CASILLA ESTA VACIA
+								for (k=j-1;k>=0;k--) { 																									// RECORRE CASILLA POR CASILLA HASTA QUE ENCUENTRA UNA NO VACIA
 									filaSup = ".fil-" + k;
 									if ($(col).find(filaSup).find("img").length) {
-										contenido1 = $(col).find(filaSup).find("img");
-										
+										contenido = $(col).find(filaSup).find("img");
+										$(col).find(fila).append(contenido);
+										clase = "imagen-"+j;
+										$(col).find(fila).find("img").attr("class",clase);
+										 $(col).find(filaSup).find("img").remove();
+										 k=0;
 										}//FIN IF	
 									}// FIN FOR
 								}// FIN IF							
