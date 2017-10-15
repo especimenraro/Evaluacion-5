@@ -1,5 +1,36 @@
 var juego = {
 			init: function () {
+				columna = this.iniciaTablero();
+				for (i=0;i<columna.length;i++) {
+					for (j=0;j<5;j++) {
+						claseImagen = ".imagen-" + j;
+						columna[i].find(claseImagen).on("mousedown", function (e) {
+						imagen ="." + this.getAttribute("class").substr(0,9);
+						fila = "." + this.parentNode.getAttribute("class");
+						col = "." + this.parentNode.parentNode.getAttribute("class");
+						
+						objeto=$(col).find(imagen);
+						objeto.draggable({
+						containment: ".panel-tablero",
+						snap: ".imagen-0 .imagen-1 .imagen-2 .imagen-3 .imagen-4",
+						snapMode: "inner",
+						revert: "invalid"});
+					});
+					
+					
+						
+					
+					} // FIN FOR
+				} // FIN FOR
+				
+				
+			}, // FIN INIT
+			
+			manejaEvento: function (columna) {
+				
+			}, // FIN MANEJA EVENTO
+			
+			iniciaTablero: function () {
 				var columna = new Array;
 				var tablero = new Array;
 				var indiceAleatorio;			
@@ -17,10 +48,9 @@ var juego = {
 							
 				}//FIN FOR
 				console.log("Inicio");
-				juego.verificaTablero(columna);
-				
-			}, // FIN INIT
-			
+				//juego.verificaTablero(columna);
+				return columna;
+			}, // FIN INICIA TABLERO
 			
 			verificaTablero: function (columna) {
 						juego.buscaIguales(columna);
