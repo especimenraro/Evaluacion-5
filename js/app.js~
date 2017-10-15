@@ -4,22 +4,26 @@ var juego = {
 				for (i=0;i<columna.length;i++) {
 					for (j=0;j<5;j++) {
 						claseImagen = ".imagen-" + j;
-						columna[i].find(claseImagen).on("mousedown", function (e) {
-						imagen ="." + this.getAttribute("class").substr(1,9);
-						fila = "." + this.parentNode.getAttribute("class");
-						col = "." + this.parentNode.parentNode.getAttribute("class");
-						
-						objeto=$(col).find(imagen);
-						objeto.draggable({
+						claseDiv = ".fil-" + j;
+						columna[i].find(claseImagen).draggable({
 						containment: ".panel-tablero",
-						snap: ".imagen-0 .imagen-1 .imagen-2 .imagen-3 .imagen-4",
+						snap: ".imagen-0, .imagen-1, .imagen-2, .imagen-3, .imagen-4",
 						snapMode: "inner",
 						revert: "invalid"});
-					});
-					
-					
+						columna[i].find(claseDiv).droppable({
+							drop: function (e,ui) {
+										console.log(e.originalEvent.target,ui);	
+										col_dest= "." + this.parentNode.getAttribute("class");
+										fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
+										obj_origen = $(col_dest).find(fila_dest).find("img")[0];
+										//$(col_dest).find(fila_dest).empty();
+										//$(col_dest).find(fila_dest).append(ui.draggable);
+										//ui.draggable.parent().empty();
+										ui.draggable.parent().append(obj_origen);
+							} //FIN DROP
+							
+							});// FIN DROPPABLE						
 						
-					
 					} // FIN FOR
 				} // FIN FOR
 				
