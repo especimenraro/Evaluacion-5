@@ -1,25 +1,36 @@
 var juego = {
 			init: function () {
 				columna = this.iniciaTablero();
+				this.asignaEvento(columna);
+				
+				
+				
+			}, // FIN INIT
+			
+			asignaEvento: function (columna) {
 				for (i=0;i<columna.length;i++) {
 					for (j=0;j<5;j++) {
 						claseImagen = ".imagen-" + j;
 						claseDiv = ".fil-" + j;
+						
 						columna[i].find(claseImagen).draggable({
 						containment: ".panel-tablero",
 						snap: ".imagen-0, .imagen-1, .imagen-2, .imagen-3, .imagen-4",
 						snapMode: "inner",
-						revert: "invalid"});
+						revert: "invalid"});		// FIN DRAGGABLE
+						
 						columna[i].find(claseDiv).droppable({
+							accept: ".imagen-0",
 							drop: function (e,ui) {
 										console.log(e.originalEvent.target,ui);	
 										col_dest= "." + this.parentNode.getAttribute("class");
 										fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
-										obj_origen = $(col_dest).find(fila_dest).find("img")[0];
-										//$(col_dest).find(fila_dest).empty();
+										obj_origen = ui.draggable[0].src;
+										obj_dest = $(col_dest).find(fila_dest).find("img")[0].src;
 										//$(col_dest).find(fila_dest).append(ui.draggable);
-										ui.draggable.parent().empty();
-										ui.draggable.parent().append(obj_origen);
+										ui.draggable[0].src=obj_dest;
+										$(col_dest).find(fila_dest).find("img")[0].src=obj_origen;
+										ui.draggable.draggable({revert: "valid"})
 							} //FIN DROP
 							
 							});// FIN DROPPABLE						
@@ -27,12 +38,7 @@ var juego = {
 					} // FIN FOR
 				} // FIN FOR
 				
-				
-			}, // FIN INIT
-			
-			manejaEvento: function (columna) {
-				
-			}, // FIN MANEJA EVENTO
+			}, // FIN ASIGNA EVENTO
 			
 			iniciaTablero: function () {
 				var columna = new Array;
