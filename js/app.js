@@ -20,19 +20,6 @@ var juego = {
 						revert: "invalid"});		// FIN DRAGGABLE
 						
 						columna[i].find(claseDiv).droppable({
-							accept: 	function (ui) {
-													console.log(this.getAttribute("class"));
-													fila_drop = Number(this.getAttribute("class").substr(4,1));
-													col_drop = Number(this.parentNode.getAttribute("class").substr(5,1));
-													fila_drag = Number(ui.attr("class").substr(7,1));
-													col_drag = Number(ui.parent().parent().attr("class").substr(4,1));
-													
-													if (col_drag==col_drop-1 ||  col_drag==col_drop+1) {
-														if (fila_drag == fila_drop-1 || fila_drag == fila_drop+1 ) { return true;}													
-													} 
-													else {return false;}
-													
-												},
 							drop: function (e,ui) {
 										
 										col_dest= "." + this.parentNode.getAttribute("class");

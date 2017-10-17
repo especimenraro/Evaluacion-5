@@ -21,7 +21,7 @@ var juego = {
 						
 						columna[i].find(claseDiv).droppable({
 							accept: 	function (ui) {
-													console.log(ui);
+													console.log(this.getAttribute("class"));
 													fila_drop = Number(this.getAttribute("class").substr(4,1));
 													col_drop = Number(this.parentNode.getAttribute("class").substr(5,1));
 													fila_drag = Number(ui.attr("class").substr(7,1));
