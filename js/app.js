@@ -24,12 +24,18 @@ var juego = {
 										
 										col_dest= "." + this.parentNode.getAttribute("class");
 										fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
-										obj_origen = ui.draggable[0].src;
-										obj_dest = $(col_dest).find(fila_dest).find("img")[0].src;
+										obj_origen = ui.draggable.attr("src");
+										obj_dest = $(col_dest).find(fila_dest).find("img").attr("src");
 										//$(col_dest).find(fila_dest).append(ui.draggable);
 										ui.draggable[0].src=obj_dest;
 										$(col_dest).find(fila_dest).find("img")[0].src=obj_origen;
-										ui.draggable.draggable({revert: "valid"})
+										ui.draggable.draggable({revert: "valid"});
+										for (i=0;i<7;i++) {
+											indiceCol = i+1;
+											objeto = ".col-"+indiceCol;
+											columna[i] = $(objeto);
+											}
+										juego.verificaTablero(columna);
 							} //FIN DROP
 							
 							});// FIN DROPPABLE						
@@ -57,12 +63,12 @@ var juego = {
 							
 				}//FIN FOR
 				console.log("Inicio");
-				//juego.verificaTablero(columna);
+				juego.verificaTablero(columna);
 				return columna;
 			}, // FIN INICIA TABLERO
 			
 			verificaTablero: function (columna) {
-						juego.buscaIguales(columna);
+					juego.buscaIguales(columna);
 						//return;
 			} , //FIN VERIFICA TABLERO
 			
@@ -196,6 +202,7 @@ var juego = {
 					objeto = ".col-"+indiceCol;
 					columna[i] = $(objeto);
 					}
+					juego.asignaEvento(columna);
 					juego.verificaTablero(columna);
 				} // FIN RELLENA TABLERO		
 			};//FIN JUEGO
