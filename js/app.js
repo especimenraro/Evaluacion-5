@@ -21,21 +21,31 @@ var juego = {
 						
 						columna[i].find(claseDiv).droppable({
 							drop: function (e,ui) {
+										fila_drag = Number(ui.draggable.attr("class").substr(7,1));
+										col_drag = Number(ui.draggable.parent().parent().attr("class").substr(4,1));
+										fila_drop = Number(this.getAttribute("class").substr(4,1));
+										col_drop = Number(this.parentNode.getAttribute("class").substr(4,1));
 										
-										col_dest= "." + this.parentNode.getAttribute("class");
-										fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
-										obj_origen = ui.draggable.attr("src");
-										obj_dest = $(col_dest).find(fila_dest).find("img").attr("src");
-										//$(col_dest).find(fila_dest).append(ui.draggable);
-										ui.draggable[0].src=obj_dest;
-										$(col_dest).find(fila_dest).find("img")[0].src=obj_origen;
-										ui.draggable.draggable({revert: "valid"});
-										for (i=0;i<7;i++) {
-											indiceCol = i+1;
-											objeto = ".col-"+indiceCol;
-											columna[i] = $(objeto);
-											}
-										juego.verificaTablero(columna);
+										if (col_drag==col_drop-1 || col_drag==col_drop+1 || col_drag == col_drop ) {
+											if (fila_drag==fila_drop-1 || fila_drag == fila_drop+1 || fila_drag == fila_drop) {
+												col_dest= "." + this.parentNode.getAttribute("class");
+												fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
+												obj_origen = ui.draggable.attr("src");
+												obj_dest = $(col_dest).find(fila_dest).find("img").attr("src");
+												//$(col_dest).find(fila_dest).append(ui.draggable);
+												ui.draggable[0].src=obj_dest;
+												$(col_dest).find(fila_dest).find("img")[0].src=obj_origen;
+												ui.draggable.draggable({revert: "valid"});
+												for (i=0;i<7;i++) {
+													indiceCol = i+1;
+													objeto = ".col-"+indiceCol;
+													columna[i] = $(objeto);
+												}
+												juego.verificaTablero(columna);
+											} // FIN IF DE FILAS			
+											else {ui.draggable.draggable({revert: "valid"});}							
+										} // FIN IF DE COLUMNAS
+										else {ui.draggable.draggable({revert: "valid"});}
 							} //FIN DROP
 							
 							});// FIN DROPPABLE						
@@ -112,7 +122,7 @@ var juego = {
 				
 				if (tableroIguales[0].length || tableroIguales[1].length || tableroIguales[2].length || tableroIguales[3].length|| tableroIguales[4].length) {
 					
-					setTimeout(juego.ocultaIguales,1000,columna,tableroIguales);
+					setTimeout(juego.ocultaIguales,500,columna,tableroIguales);
 					//return;
 					} // FIN IF
 				else { return;}
@@ -130,7 +140,7 @@ var juego = {
 								}
 					}//FIN FOR				
 				}//FIN FOR
-				setTimeout(juego.eliminaIguales,1000,columna,tableroIguales);
+				setTimeout(juego.eliminaIguales,500,columna,tableroIguales);
 				
 				//return;
 			}, //FIN OCULTA IGUALES
