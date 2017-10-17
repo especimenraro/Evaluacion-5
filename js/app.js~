@@ -1,19 +1,40 @@
 var juego = {
 			init: function () {
 				columna = this.iniciaTablero();
+				this.asignaEvento(columna);
+				
+				
+				
+			}, // FIN INIT
+			
+			asignaEvento: function (columna) {
 				for (i=0;i<columna.length;i++) {
 					for (j=0;j<5;j++) {
 						claseImagen = ".imagen-" + j;
 						claseDiv = ".fil-" + j;
+						
 						columna[i].find(claseImagen).draggable({
 						containment: ".panel-tablero",
 						snap: ".imagen-0, .imagen-1, .imagen-2, .imagen-3, .imagen-4",
 						snapMode: "inner",
-						revert: "invalid"});
+						revert: "invalid"});		// FIN DRAGGABLE
+						
 						columna[i].find(claseDiv).droppable({
-							accept: ".imagen-0",
+							accept: 	function (ui) {
+													console.log(ui);
+													fila_drop = Number(this.getAttribute("class").substr(4,1));
+													col_drop = Number(this.parentNode.getAttribute("class").substr(5,1));
+													fila_drag = Number(ui.attr("class").substr(7,1));
+													col_drag = Number(ui.parent().parent().attr("class").substr(4,1));
+													
+													if (col_drag==col_drop-1 ||  col_drag==col_drop+1) {
+														if (fila_drag == fila_drop-1 || fila_drag == fila_drop+1 ) { return true;}													
+													} 
+													else {return false;}
+													
+												},
 							drop: function (e,ui) {
-										console.log(e.originalEvent.target,ui);	
+										
 										col_dest= "." + this.parentNode.getAttribute("class");
 										fila_dest = "." 		+		this.getAttribute("class").substr(0,5);
 										obj_origen = ui.draggable[0].src;
@@ -29,12 +50,7 @@ var juego = {
 					} // FIN FOR
 				} // FIN FOR
 				
-				
-			}, // FIN INIT
-			
-			manejaEvento: function (columna) {
-				
-			}, // FIN MANEJA EVENTO
+			}, // FIN ASIGNA EVENTO
 			
 			iniciaTablero: function () {
 				var columna = new Array;
