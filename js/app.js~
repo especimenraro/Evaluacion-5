@@ -1,11 +1,72 @@
 var juego = {
 			init: function () {
-				columna = this.iniciaTablero();
-				this.asignaEvento(columna);
+				this.tiempo = 120;
+				this.temporizador = 0;
+				this.oculta = 0;
+				this.elimina = 0;
+				this.puntaje = 0;
+				this.movimientos = 0;
+				setInterval(function () {
+					color = $(".main-titulo").css("color");
+					if (color == "rgb(220, 255, 14)") {
+						$(".main-titulo").css("color","rgb(255, 255, 255)");
+						 } else {
+						 	$(".main-titulo").css("color","rgb(220, 255, 14)");
+						 	}				
+				},500); // FIN SET INTERVAL PARA COLOR DE MAIN TITULO
 				
+				$(".btn-reinicio").on("click",function () {
+					clearInterval(juego.temporizador);
+					$(".panel-score").css("width","25%");		
+					$(".panel-tablero").slideDown();
+					juego.puntaje = 0;
+					juego.movimientos = 0;
+					$("#movimientos-text").html(juego.movimientos.toString());
+					$("#score-text").html(juego.puntaje.toString());
+					juego.tiempo = 120;
+				if ($(".btn-reinicio").html()=="Iniciar") {
+					$(".btn-reinicio").html("Re-Iniciar");
+					} 
+					$(".col-1").empty();
+					$(".col-2").empty();
+					$(".col-3").empty();
+					$(".col-4").empty();
+					$(".col-5").empty();
+					$(".col-6").empty();
+					$(".col-7").empty();
+					columna = juego.iniciaTablero();
+					juego.asignaEvento(columna);
+					juego.temporizador = setInterval(juego.timer,1000);
+				
+				}); // FIN EVENTO CLICK BOTON REINICIO			
 				
 				
 			}, // FIN INIT
+			
+			timer: function () {
+				cuenta = juego.tiempo;
+				minuto = Math.ceil(cuenta/60)-1;
+				segundo = cuenta-60*(Math.ceil(cuenta/60)-1)-1;
+				if (segundo.toString().length == 1) {
+					segundoTexto = "0"+segundo;
+					}
+					else {
+						segundoTexto = segundo;
+					}
+					tiempoTexto = "0" + minuto.toString() +":"	+ segundoTexto;
+					$("#timer").html(tiempoTexto);
+					cuenta--;
+					juego.tiempo = cuenta;	
+					if (cuenta == 0) {juego.stopGame();}
+			}, // FIN TIMER
+			
+			stopGame: function () {
+				clearInterval(juego.temporizador);
+				clearInterval(juego.oculta);
+				clearInterval(juego.elimina);
+				$(".panel-tablero").slideUp();
+				$(".panel-score").css("width","100%");						
+			}, // FIN STOP GAME
 			
 			asignaEvento: function (columna) {
 				for (i=0;i<columna.length;i++) {
@@ -21,6 +82,8 @@ var juego = {
 						
 						columna[i].find(claseDiv).droppable({
 							drop: function (e,ui) {
+										juego.movimientos++;
+										$("#movimientos-text").html(juego.movimientos.toString());
 										fila_drag = Number(ui.draggable.attr("class").substr(7,1));
 										col_drag = Number(ui.draggable.parent().parent().attr("class").substr(4,1));
 										fila_drop = Number(this.getAttribute("class").substr(4,1));
@@ -103,6 +166,7 @@ var juego = {
 							} //FIN IF
 							else if (cuenta>=2) {
 								lineaIguales = figurasIguales.concat(lineaIguales);
+								juego.puntaje++;
 								figurasIguales = [];
 								cuenta=0;
 								indice = -1;
@@ -112,7 +176,10 @@ var juego = {
 									indice = -1;				
 								}// FIN ELSE		
 						} //FIN FOR		COLUMNAS
-						if (cuenta>=2) {lineaIguales = figurasIguales.concat(lineaIguales);}
+						if (cuenta>=2) {
+							lineaIguales = figurasIguales.concat(lineaIguales);
+							juego.puntaje++;
+							}
 						cuenta=0;
 						indice = -1;
 						tableroIguales.push(lineaIguales); 
@@ -122,7 +189,7 @@ var juego = {
 				
 				if (tableroIguales[0].length || tableroIguales[1].length || tableroIguales[2].length || tableroIguales[3].length|| tableroIguales[4].length) {
 					
-					setTimeout(juego.ocultaIguales,1000,columna,tableroIguales);
+					juego.oculta = setTimeout(juego.ocultaIguales,500,columna,tableroIguales);
 					//return;
 					} // FIN IF
 				else { return;}
@@ -140,7 +207,7 @@ var juego = {
 								}
 					}//FIN FOR				
 				}//FIN FOR
-				setTimeout(juego.eliminaIguales,1000,columna,tableroIguales);
+				juego.elimina = setTimeout(juego.eliminaIguales,500,columna,tableroIguales);
 				
 				//return;
 			}, //FIN OCULTA IGUALES
